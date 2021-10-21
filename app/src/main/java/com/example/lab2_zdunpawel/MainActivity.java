@@ -16,6 +16,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements Fragment1.OnButtonClickListener{
     private int[] frames;
     private boolean hidden;
+    private int [] sequence;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,7 @@ public class MainActivity extends FragmentActivity implements Fragment1.OnButton
         if (savedInstanceState == null) {
             frames = new int[]{R.id.frame1, R.id.frame2, R.id.frame3, R.id.frame4};
             hidden = false;
+            sequence = new int[]{0,1,2,3};
             Fragment[] fragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -41,13 +43,14 @@ public class MainActivity extends FragmentActivity implements Fragment1.OnButton
         super.onSaveInstanceState(outState);
         outState.putIntArray("FRAMES", frames);
         outState.putBoolean("HIDDEN", hidden);
+        outState.putIntArray("SEQUENCE", sequence);
     }
 
     @Override
     public void onButtonClickShuffle() {
-        List<Integer> list = new ArrayList<Integer>(Arrays.asList(frames[0], frames[1], frames[2], frames[3]));
-        Collections.shuffle(list);
-        for (int i = 0; i < 4; i++) frames[i] = list.get(i).intValue();
+        List<Integer> s = new ArrayList<>(Arrays.asList(sequence[0], sequence[1], sequence[2], sequence[3]));
+        Collections.shuffle(s);
+        for(int i = 0; i < 4; i++) sequence[i] = s.get(i);
         newFragments();
     }
     @Override
@@ -96,6 +99,8 @@ public class MainActivity extends FragmentActivity implements Fragment1.OnButton
     }
     private void newFragments() {
         Fragment[] newFragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
+        Fragment[] inSequence = new Fragment[] {newFragments[sequence[0]], newFragments[sequence[1]], newFragments[sequence[2]], newFragments[sequence[3]] };
+        newFragments = inSequence;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         for (int i = 0; i < 4; i++) {
