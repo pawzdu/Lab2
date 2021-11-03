@@ -63,6 +63,7 @@ public class Fragment1 extends Fragment {
     }
 }*/
 import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionInflater;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -87,7 +88,11 @@ public class Fragment1 extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
